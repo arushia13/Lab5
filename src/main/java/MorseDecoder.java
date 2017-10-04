@@ -55,12 +55,21 @@ public class MorseDecoder {
         for (int binIndex = 0; binIndex < totalBinCount; binIndex++) {
             // Get the right number of samples from the inputFile
             // Sum all the samples together and store them in the returnBuffer
+            int f = inputFile.readFrames(sampleBuffer, sampleBuffer.length);
+            double total = 0;
+            for (int i = 0; i < sampleBuffer.length; i++) {
+                total += Math.abs(sampleBuffer[i]);
+            }
+            if(f < BIN_SIZE && !(binIndex == totalBinCount - 1)) {
+                throw new WavFileException("short read from WAV file");
+            }
+            returnBuffer[binIndex] = total;
         }
         return returnBuffer;
     }
 
     /** Power threshold for power or no power. You may need to modify this value. */
-    private static final double POWER_THRESHOLD = 10;
+    private static final double POWER_THRESHOLD = 0.5;
 
     /** Bin threshold for dots or dashes. Related to BIN_SIZE. You may need to modify this value. */
     private static final int DASH_BIN_COUNT = 8;
@@ -81,13 +90,28 @@ public class MorseDecoder {
          * There are four conditions to handle. Symbols should only be output when you see
          * transitions. You will also have to store how much power or silence you have seen.
          */
+        String str = "";
 
-        // if ispower and waspower
-        // else if ispower and not waspower
-        // else if issilence and wassilence
-        // else if issilence and not wassilence
+        boolean isPower = false;
+        boolean wasPower = false;
+        boolean isSilence = true;
+        boolean wasSilence = true;
 
-        return "";
+        for (int i = 0; i < powerMeasurements.length; i++) {
+
+        }
+
+        if (isPower && wasPower) {
+
+        } else if (isPower && !wasPower) {
+
+        } else if (isSilence && wasSilence) {
+
+        } else if (isSilence && !wasSilence) {
+
+        }
+
+        return str;
     }
 
     /**
